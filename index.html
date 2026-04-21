@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content System - 内容管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .content-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            background: #f0f0f0;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .content-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .content-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px;
+            border-left: 4px solid #667eea;
+            transition: all 0.2s;
+        }
+        
+        .content-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-item.deleted {
+            opacity: 0.6;
+            border-left-color: #f5576c;
+        }
+        
+        .content-item.archived {
+            border-left-color: #4facfe;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .content-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .content-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .tag.publisher-member {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .tag.publisher-community {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .tag.draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .tag.archived {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .tag.deleted {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .content-body {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .content-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .content-actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            background: #e9ecef;
+            color: #495057;
+            transition: all 0.2s;
+        }
+        
+        .content-actions button:hover {
+            background: #dee2e6;
+        }
+        
+        .content-actions .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .content-actions .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .content-actions .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .reply-area {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .reply-form {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .reply-form textarea {
+            flex: 1;
+            min-height: 60px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .reply-form button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            align-self: flex-end;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .member-list, .community-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .member-item, .community-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .active-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4facfe;
+        }
+        
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Content System</h1>
+            <p>功能完整的内容管理系统 - 演示所有改进功能</p>
+        </div>
+        
+        <div class="main-grid">
+            <div class="sidebar">
+                <div class="card">
+                    <h3>👤 当前用户</h3>
+                    <div id="currentUser">未选择用户</div>
+                    <div style="margin-top: 12px;">
+                        <button class="btn btn-outline" style="width: 100%;" onclick="openMemberModal()">切换用户</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📝 发布内容</h3>
+                    <div class="form-group">
+                        <label>内容类型</label>
+                        <select id="contentType">
+                            <option value="post">帖子</option>
+                            <option value="article">文章</option>
+                            <option value="note">笔记</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="contentTitle" placeholder="输入标题">
+                    </div>
+                    <div class="form-group">
+                        <label>内容</label>
+                        <textarea id="contentBody" placeholder="输入内容"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select id="contentStatus">
+                            <option value="published">发布</option>
+                            <option value="draft">草稿</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="publishContent()">发布内容</button>
+                </div>
+                
+                <div class="card">
+                    <h3>📋 快捷操作</h3>
+                    <button class="btn" style="margin-bottom: 8px;" onclick="loadDemoData()">🎯 加载演示数据</button>
+                    <button class="btn btn-outline" onclick="refreshAll()">🔄 刷新数据</button>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <div class="tabs">
+                    <button class="tab active" data-tab="all" onclick="switchTab('all')">全部内容</button>
+                    <button class="tab" data-tab="draft" onclick="switchTab('draft')">草稿</button>
+                    <button class="tab" data-tab="archived" onclick="switchTab('archived')">归档</button>
+                    <button class="tab" data-tab="trash" onclick="switchTab('trash')">回收站</button>
+                </div>
+                
+                <div id="contentList" class="content-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p>暂无内容，点击 "加载演示数据" 开始</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 成员选择模态框 -->
+    <div id="memberModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 12px; padding: 24px; width: 400px; max-width: 90%;">
+            <h2 style="margin-bottom: 16px;">选择用户</h2>
+            <div id="memberListModal"></div>
+            <button style="margin-top: 16px; padding: 8px 24px; background: #ddd; border: none; border-radius: 6px; cursor: pointer;" onclick="closeMemberModal()">取消</button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001/api';
+        
+        let state = {
+            currentUser: null,
+            members: [],
+            communities: [],
+            contents: [],
+            currentTab: 'all'
+        };
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMembers();
+            loadCommunities();
+            loadContents();
+        });
+        
+        // API 请求辅助函数
+        async function apiRequest(endpoint, method = 'GET', body = null) {
+            try {
+                const options = {
+                    method,
+                    headers: { 'Content-Type': 'application/json' }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const response = await fetch(`${API_BASE}${endpoint}`, options);
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                return { error: error.message };
+            }
+        }
+        
+        // 加载成员
+        async function loadMembers() {
+            const data = await apiRequest('/members');
+            if (!data.error) {
+                state.members = data;
+                if (data.length > 0 && !state.currentUser) {
+                    selectMember(data[0]);
+                }
+            }
+        }
+        
+        // 加载社区
+        async function loadCommunities() {
+            const data = await apiRequest('/communities');
+            if (!data.error) {
+                state.communities = data;
+            }
+        }
+        
+        // 加载内容
+        async function loadContents() {
+            const data = await apiRequest('/contents');
+            if (!data.error) {
+                state.contents = data;
+                renderContents();
+            }
+        }
+        
+        // 选择成员
+        function selectMember(member) {
+            state.currentUser = { id: member.id, type: 'member', name: member.name };
+            document.getElementById('currentUser').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="active-indicator"></div>
+                    <strong>${member.name}</strong>
+                </div>
+                <small style="color: #999; margin-top: 4px; display: block;">${member.email || 'member@example.com'}</small>
+            `;
+        }
+        
+        // 打开成员选择模态框
+        function openMemberModal() {
+            const modal = document.getElementById('memberModal');
+            const list = document.getElementById('memberListModal');
+            
+            let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
+            state.members.forEach(member => {
+                html += `
+                    <div onclick="selectMemberFromModal('${member.id}')" 
+                         style="padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer;">
+                        <strong>${member.name}</strong>
+                        <div style="font-size: 12px; color: #666;">${member.email || 'member@example.com'}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            list.innerHTML = html;
+            modal.style.display = 'flex';
+        }
+        
+        function closeMemberModal() {
+            document.getElementById('memberModal').style.display = 'none';
+        }
+        
+        function selectMemberFromModal(memberId) {
+            const member = state.members.find(m => m.id === memberId);
+            if (member) {
+                selectMember(member);
+                closeMemberModal();
+            }
+        }
+        
+        // 发布内容
+        async function publishContent() {
+            if (!state.currentUser) {
+                alert('请先选择用户！');
+                return;
+            }
+            
+            const type = document.getElementById('contentType').value;
+            const title = document.getElementById('contentTitle').value;
+            const body = document.getElementById('contentBody').value;
+            const status = document.getElementById('contentStatus').value;
+            
+            if (!body) {
+                alert('请输入内容！');
+                return;
+            }
+            
+            await apiRequest('/contents', 'POST', {
+                publisherType: 'member',
+                memberId: state.currentUser.id,
+                contentType: type,
+                title,
+                body,
+                status
+            });
+            
+            document.getElementById('contentTitle').value = '';
+            document.getElementById('contentBody').value = '';
+            
+            loadContents();
+        }
+        
+        // 切换标签
+        function switchTab(tab) {
+            state.currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            renderContents();
+        }
+        
+        // 渲染内容列表
+        function renderContents() {
+            const container = document.getElementById('contentList');
+            
+            let filteredContents = [...state.contents];
+            
+            switch (state.currentTab) {
+                case 'draft':
+                    filteredContents = filteredContents.filter(c => c.status === 'draft');
+                    break;
+                case 'archived':
+                    filteredContents = filteredContents.filter(c => c.status === 'archived');
+                    break;
+                case 'trash':
+                    filteredContents = filteredContents.filter(c => c.deleted);
+                    break;
+                default:
+                    filteredContents = filteredContents.filter(c => !c.deleted);
+            }
+            
+            if (filteredContents.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p>当前标签页暂无内容</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            filteredContents.forEach(content => {
+                let tags = [
+                    `<span class="tag">${content.type.toUpperCase()}</span>`,
+                    `<span class="tag publisher-${content.publisher.type}">${content.publisher.name}</span>`
+                ];
+                
+                if (content.status === 'draft') tags.push('<span class="tag draft">草稿</span>');
+                if (content.status === 'archived') tags.push('<span class="tag archived">归档</span>');
+                if (content.deleted) tags.push('<span class="tag deleted">已删除</span>');
+                
+                html += `
+                    <div class="content-item ${content.deleted ? 'deleted' : ''} ${content.status === 'archived' ? 'archived' : ''}">
+                        <div class="content-header">
+                            <div class="content-title">${content.title || content.body.substring(0, 40) + '...'}</div>
+                            <div class="content-meta">${tags.join('')}</div>
+                        </div>
+                        <div class="content-body">${content.body}</div>
+                        <div class="content-actions">
+                            ${content.deleted ? `
+                                <button class="btn-success" onclick="restoreContent('${content.id}')">恢复</button>
+                            ` : `
+                                <button onclick="likeContent('${content.id}')">👍 点赞</button>
+                                <button class="btn-primary" onclick="replyContent('${content.id}')">回复</button>
+                                ${content.status === 'draft' ? `<button class="btn-success" onclick="publishDraft('${content.id}')">发布</button>` : ''}
+                                ${content.status !== 'archived' ? `<button onclick="archiveContent('${content.id}')">归档</button>` : ''}
+                                <button class="btn-danger" onclick="deleteContent('${content.id}')">删除</button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // 内容操作函数
+        async function likeContent(id) {
+            if (!state.currentUser) return;
+            await apiRequest(`/contents/${id}/like`, 'POST', { author: state.currentUser });
+            alert('点赞成功！');
+            loadContents();
+        }
+        
+        async function replyContent(id) {
+            if (!state.currentUser) return;
+            const replyBody = prompt('请输入回复内容:');
+            if (replyBody) {
+                await apiRequest(`/contents/${id}/reply`, 'POST', {
+                    author: state.currentUser,
+                    body: replyBody
+                });
+                loadContents();
+            }
+        }
+        
+        async function publishDraft(id) {
+            await apiRequest(`/contents/${id}/publish`, 'POST');
+            loadContents();
+        }
+        
+        async function archiveContent(id) {
+            await apiRequest(`/contents/${id}/archive`, 'POST');
+            loadContents();
+        }
+        
+        async function deleteContent(id) {
+            if (confirm('确定要删除这个内容吗？')) {
+                await apiRequest(`/contents/${id}`, 'DELETE');
+                loadContents();
+            }
+        }
+        
+        async function restoreContent(id) {
+            await apiRequest(`/contents/${id}/restore`, 'POST');
+            loadContents();
+        }
+        
+        // 刷新所有数据
+        function refreshAll() {
+            loadMembers();
+            loadCommunities();
+            loadContents();
+        }
+        
+        // 加载演示数据
+        async function loadDemoData() {
+            if (!state.currentUser) {
+                alert('请先创建并选择用户！');
+                return;
+            }
+            
+            // 创建演示内容
+            const demoContents = [
+                { type: 'article', title: 'JavaScript 入门指南', body: '本指南将带你从零基础开始学习 JavaScript...', status: 'published' },
+                { type: 'post', title: '欢迎来到社区！', body: '大家好，欢迎加入我们的社区！', status: 'published' },
+                { type: 'note', title: '学习笔记', body: '今天学到了很多，记录一下...', status: 'draft' }
+            ];
+            
+            for (const content of demoContents) {
+                await apiRequest('/contents', 'POST', {
+                    publisherType: 'member',
+                    memberId: state.currentUser.id,
+                    contentType: content.type,
+                    title: content.title,
+                    body: content.body,
+                    status: content.status
+                });
+            }
+            
+            loadContents();
+            alert('演示数据加载成功！');
+        }
+    </script>
+</body>
+</html>

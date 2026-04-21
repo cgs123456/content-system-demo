@@ -1,0 +1,20 @@
+
+{
+  "name": "content-system-demo",
+  "version": "1.0.0",
+  "description": "Content system demo with member/community publishers, content relations, and interactions",
+  "main": "index.js",
+  "scripts": {
+    "demo": "node demo.js",
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "keywords": ["content", "system", "demo"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
