@@ -60,15 +60,23 @@ node server.js
 ```
 content-system/
 ├── index.html           # 前端界面
+├── styles.css           # 前端样式
 ├── server.js            # 服务器主文件
-├── store.js             # 内存数据存储
-├── content-service.js   # 业务逻辑层
-├── api.js               # (可选) 独立的 API 模块
+├── store.js             # 内存数据存储 (JS 版本)
+├── store.ts             # 内存数据存储 (TS 版本)
+├── content-service.js   # 业务逻辑层 (JS 版本)
+├── content-service.ts   # 业务逻辑层 (TS 版本)
+├── api.js               # API 模块 (JS 版本)
+├── api.ts               # API 模块 (TS 版本)
+├── types.ts             # TypeScript 类型定义
+├── tsconfig.json        # TypeScript 编译配置
+├── package.json         # 项目配置
 ├── demo.js              # 完整系统演示
 ├── test-system.js       # 系统测试脚本
 ├── test-improvements.js # 改进功能测试
 ├── init-data.js         # 数据初始化脚本
 ├── IMPROVEMENTS.md      # 改进文档
+├── .gitignore           # Git 忽略文件
 └── README.md            # 本文件
 ```
 
