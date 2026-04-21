@@ -5,379 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content System - 内容管理系统</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .main-grid {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 24px;
-        }
-        
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .card h3 {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .form-group {
-            margin-bottom: 12px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 4px;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.1s;
-            width: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #667eea;
-            color: #667eea;
-        }
-        
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        .content-area {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 12px;
-        }
-        
-        .tab {
-            padding: 8px 16px;
-            border: none;
-            background: transparent;
-            color: #666;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        
-        .tab:hover {
-            background: #f0f0f0;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .content-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .content-item {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 16px;
-            border-left: 4px solid #667eea;
-            transition: all 0.2s;
-        }
-        
-        .content-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        
-        .content-item.deleted {
-            opacity: 0.6;
-            border-left-color: #f5576c;
-        }
-        
-        .content-item.archived {
-            border-left-color: #4facfe;
-        }
-        
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-        
-        .content-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .content-meta {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .tag {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            background: #e9ecef;
-            color: #495057;
-            font-weight: 500;
-        }
-        
-        .tag.publisher-member {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .tag.publisher-community {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .tag.draft {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .tag.archived {
-            background: #e2e3e5;
-            color: #383d41;
-        }
-        
-        .tag.deleted {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .content-body {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-        
-        .content-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .content-actions button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            background: #e9ecef;
-            color: #495057;
-            transition: all 0.2s;
-        }
-        
-        .content-actions button:hover {
-            background: #dee2e6;
-        }
-        
-        .content-actions .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .content-actions .btn-danger {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-        
-        .content-actions .btn-success {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-        
-        .reply-area {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .reply-form {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .reply-form textarea {
-            flex: 1;
-            min-height: 60px;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-        
-        .reply-form button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            align-self: flex-end;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-        
-        .empty-state svg {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-        
-        .member-list, .community-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .member-item, .community-item {
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .active-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #4facfe;
-        }
-        
-        @media (max-width: 768px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -391,8 +19,8 @@
                 <div class="card">
                     <h3>👤 当前用户</h3>
                     <div id="currentUser">未选择用户</div>
-                    <div style="margin-top: 12px;">
-                        <button class="btn btn-outline" style="width: 100%;" onclick="openMemberModal()">切换用户</button>
+                    <div class="switch-user-btn">
+                        <button class="btn btn-outline" onclick="openMemberModal()">切换用户</button>
                     </div>
                 </div>
                 
@@ -400,7 +28,7 @@
                     <h3>📝 发布内容</h3>
                     <div class="form-group">
                         <label>内容类型</label>
-                        <select id="contentType">
+                        <select id="contentType" title="选择内容类型">
                             <option value="post">帖子</option>
                             <option value="article">文章</option>
                             <option value="note">笔记</option>
@@ -416,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <label>状态</label>
-                        <select id="contentStatus">
+                        <select id="contentStatus" title="选择内容状态">
                             <option value="published">发布</option>
                             <option value="draft">草稿</option>
                         </select>
@@ -426,7 +54,7 @@
                 
                 <div class="card">
                     <h3>📋 快捷操作</h3>
-                    <button class="btn" style="margin-bottom: 8px;" onclick="loadDemoData()">🎯 加载演示数据</button>
+                    <button class="btn action-btn" onclick="loadDemoData()">🎯 加载演示数据</button>
                     <button class="btn btn-outline" onclick="refreshAll()">🔄 刷新数据</button>
                 </div>
             </div>
@@ -454,11 +82,11 @@
     </div>
     
     <!-- 成员选择模态框 -->
-    <div id="memberModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; border-radius: 12px; padding: 24px; width: 400px; max-width: 90%;">
-            <h2 style="margin-bottom: 16px;">选择用户</h2>
+    <div id="memberModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">选择用户</h2>
             <div id="memberListModal"></div>
-            <button style="margin-top: 16px; padding: 8px 24px; background: #ddd; border: none; border-radius: 6px; cursor: pointer;" onclick="closeMemberModal()">取消</button>
+            <button class="modal-close-btn" onclick="closeMemberModal()">取消</button>
         </div>
     </div>
 
@@ -532,11 +160,11 @@
         function selectMember(member) {
             state.currentUser = { id: member.id, type: 'member', name: member.name };
             document.getElementById('currentUser').innerHTML = `
-                <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="user-info">
                     <div class="active-indicator"></div>
                     <strong>${member.name}</strong>
                 </div>
-                <small style="color: #999; margin-top: 4px; display: block;">${member.email || 'member@example.com'}</small>
+                <small class="user-info-email">${member.email || 'member@example.com'}</small>
             `;
         }
         
@@ -544,19 +172,19 @@
         function openMemberModal() {
             const modal = document.getElementById('memberModal');
             const list = document.getElementById('memberListModal');
-            
-            let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
+
+            let html = '<div class="member-list-modal">';
             state.members.forEach(member => {
                 html += `
-                    <div onclick="selectMemberFromModal('${member.id}')" 
-                         style="padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer;">
+                    <div class="member-item-modal"
+                         onclick="selectMemberFromModal('${member.id}')">
                         <strong>${member.name}</strong>
-                        <div style="font-size: 12px; color: #666;">${member.email || 'member@example.com'}</div>
+                        <div class="member-item-email">${member.email || 'member@example.com'}</div>
                     </div>
                 `;
             });
             html += '</div>';
-            
+
             list.innerHTML = html;
             modal.style.display = 'flex';
         }

@@ -10,9 +10,11 @@
 **功能**: 添加便捷的回复功能，简化回复操作流程
 
 **新增 API**:
+
 - `POST /api/contents/:id/reply` - 回复某内容
 
 **新增服务方法**:
+
 - `service.replyTo(targetContentId, author, body, options)`
 
 **特性**:
@@ -30,16 +32,19 @@
 **功能**: 支持完整的状态生命周期: `draft` → `published` → `archived`
 
 **新增 API**:
+
 - `PUT /api/contents/:id/status` - 直接更新状态
 - `POST /api/contents/:id/publish` - 发布草稿
 - `POST /api/contents/:id/archive` - 归档内容
 
 **新增服务方法**:
+
 - `service.updateContentStatus(contentId, newStatus)`
 - `service.publishDraft(contentId)`
 - `service.archiveContent(contentId)`
 
 **特性**:
+
 - 状态验证，只允许: `draft`, `published`, `archived`
 - 发布时自动设置 `publishedAt` 时间戳
 - 支持从任意状态转换
@@ -51,20 +56,24 @@
 **功能**: 支持误删内容的恢复，提供完整的回收站体验
 
 **新增 API**:
+
 - `DELETE /api/contents/:id` - 软删除内容
 - `POST /api/contents/:id/restore` - 恢复内容
 - `GET /api/trash` - 获取回收站列表
 
 **新增服务方法**:
+
 - `service.softDelete(contentId)`
 - `service.restoreContent(contentId)`
 - `service.getTrash()`
 
 **新增字段**:
+
 - `content.deleted` - 是否被删除
 - `content.deletedAt` - 删除时间
 
 **特性**:
+
 - 默认内容列表不包含已删除项
 - 回收站只显示 `deleted === true` 的内容
 - 恢复后内容正常显示在列表中
@@ -148,6 +157,7 @@ POST /api/contents/{contentId}/restore
 **功能**: 明确谁可以修改/删除内容
 
 **建议实现**:
+
 - 检查 `author.id` 是否匹配
 - 社区运营者可以修改社区发布的内容
 - 增加 `canModify()`, `canDelete()` 方法
@@ -159,6 +169,7 @@ POST /api/contents/{contentId}/restore
 **功能**: 将内存存储替换为实际数据库
 
 **建议方案**:
+
 - **SQLite** - 轻量级，简单
 - **MongoDB** - 文档型，适合内容
 - **PostgreSQL** - 功能强大的关系型
