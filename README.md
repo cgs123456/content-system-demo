@@ -190,9 +190,11 @@ POST /api/contents/{id}/restore
 ## 📝 技术栈
 
 - **后端**: Node.js (原生 HTTP)
+- **类型系统**: TypeScript 5.0+
 - **数据**: 内存存储 (可扩展为数据库)
 - **前端**: 原生 JavaScript + HTML + CSS
 - **架构**: 三层架构 (存储/服务/API)
+- **构建工具**: TypeScript Compiler (tsc)
 
 ## 🎊 项目亮点
 
@@ -202,6 +204,18 @@ POST /api/contents/{id}/restore
 4. **有测试**: 完整的测试脚本
 5. **有界面**: 美观的前端界面
 6. **有文档**: 详细的 README 和改进文档
+7. **类型安全**: 完整的 TypeScript 支持
+8. **双版本**: 同时提供 TypeScript 和 JavaScript 版本
+
+## 🤝 贡献指南
+
+欢迎贡献！请遵循以下步骤：
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
 
 ## 📞 联系
 
