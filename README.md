@@ -3,6 +3,27 @@
 
 一个功能完整的内容管理系统，支持用户发布、互动、关系管理等功能。
 
+<div align="center">
+  <p>
+    <img src="https://img.shields.io/badge/Node.js-18+-green?style=flat-square" alt="Node.js">
+    <img src="https://img.shields.io/badge/TypeScript-5.0+-blue?style=flat-square" alt="TypeScript">
+    <img src="https://img.shields.io/badge/License-MIT-orange?style=flat-square" alt="License">
+  </p>
+</div>
+
+## 📖 目录
+
+- [🎉 功能特性](#-功能特性)
+- [🚀 快速开始](#-快速开始)
+- [📋 项目结构](#-项目结构)
+- [📚 API 文档](#-api-文档)
+- [💡 使用示例](#-使用示例)
+- [🎯 后续改进建议](#-后续改进建议-低优先级)
+- [📊 测试脚本](#-测试脚本)
+- [📝 技术栈](#-技术栈)
+- [🎊 项目亮点](#-项目亮点)
+- [🤝 贡献指南](#-贡献指南)
+
 ## 🎉 功能特性
 
 ### 核心功能
